@@ -40,7 +40,7 @@ export default function Grid() {
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col space-y-3">
             <div className="grid grid-cols-9 gap-1">
                 {grid.map((row, rIdx) =>
                     row.map((cell, cIdx) => (
@@ -73,7 +73,7 @@ export default function Grid() {
                     Test
                 </button>
                 <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-25"
                     onClick={() => {
                         const clone = grid.map(r => r.map(c => ({ ...c })))
                         const moves = humanSolver(clone)
@@ -84,7 +84,7 @@ export default function Grid() {
                     Human
                 </button>
                 <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-25"
                     onClick={() => {
                         const clone = grid.map(r => r.map(c => ({ ...c })))
                         const moves = solveWithForwardChecking(clone)

@@ -32,7 +32,7 @@ function App() {
             for (const move of moves) {
                 setActiveCell({ r: move.r, c: move.c })
                 handleGridChange(move.r, move.c, String(move.value))
-                await sleep(5000 / moves.length)
+                await sleep(10000 / moves.length)
             }
             setActiveCell(null);
         }
@@ -56,7 +56,7 @@ function App() {
             <div className='flex flex-col mx-auto w-135'>
 
                 <div className='flex justify-between text-black py-3'>
-                    <select className='bg-zinc-300 rounded-xl w-50 pr-4 font-bold'
+                    <select className='bg-zinc-300 rounded-xl w-70 pr-4 pl-2 font-bold'
                         defaultValue={"default"}
                         value={selectedAlgorithm}
                         onChange={(option) => {

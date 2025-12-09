@@ -9,3 +9,5 @@ export type SudokuMove = {
     value: number
     reason: string
 }
+
+export type Algo = "human" | "backtracking"

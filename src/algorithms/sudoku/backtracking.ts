@@ -2,7 +2,7 @@ import type { Cell, SudokuMove } from "./types"
 
 type CandidateMap = number[][][]
 
-export function solveWithForwardChecking(grid: Cell[][]): SudokuMove[] | null {
+export function solveWithBacktracking(grid: Cell[][]): SudokuMove[] | null {
     const moves: SudokuMove[] = []
 
     const candidates: CandidateMap = Array.from({ length: 9 }, (_, r) =>

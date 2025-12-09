@@ -1,4 +1,7 @@
-import type { Cell } from "./types"
+import { solveWithBacktracking } from "./backtracking"
+import { humanSolver } from "./humanSolver"
+import type { Algo, Cell, SudokuMove } from "./types"
+
 
 export function getCandidates(grid: Cell[][], r: number, c: number): number[] {
     if (grid[r][c].value != null) return []
@@ -44,4 +47,24 @@ export function createEmptyGrid(): Cell[][] {
     return Array.from({ length: 9 }, () =>
         Array.from({ length: 9 }, () => ({ value: null, isFixed: false }))
     );
+}
+
+export function solve(
+    grid: Cell[][],
+    setGrid: (grid: Cell[][]) => void,
+    algorithm: Algo
+) {
+    const clone = grid.map(r => r.map(c => ({ ...c })))
+    let moves: SudokuMove[] | null = []
+    if (algorithm == 'backtracking') {
+        moves = solveWithBacktracking(clone)
+    } else if (algorithm == 'human') {
+        moves = humanSolver(clone)
+    } else {
+        console.error('Attempted to Solve without an algorithm selected.')
+    }
+    setGrid(clone)
+    // console.log("moves", moves)
+    // console.log("final grid", clone.map(r => r.map(c => c.value)))
+    return moves
 }

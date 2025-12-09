@@ -1,6 +1,6 @@
 // Assuming your types and initial candidate setup (updateCandidates) are available
 
-import { solveWithForwardChecking } from "./forwardSolver"
+import { solveWithBacktracking } from "./backtracking"
 import type { Cell, SudokuMove } from "./types"
 
 // Assuming solveWithForwardChecking and types are imported from your existing code
@@ -45,7 +45,7 @@ export function humanSolver2(initialGrid: Cell[][]): SudokuMove[] | null {
         // Logic stalled. Resort to backtracking/guessing on the partially-solved board.
         console.log("Logic stalled. Falling back to Forward Checking Backtracking...")
         
-        const remainingMoves = solveWithForwardChecking(grid)
+        const remainingMoves = solveWithBacktracking(grid)
         
         if (remainingMoves) {
             return moves.concat(remainingMoves)

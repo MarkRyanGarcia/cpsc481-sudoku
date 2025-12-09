@@ -1,4 +1,4 @@
-import { solveWithForwardChecking } from "./forwardSolver"
+import { solveWithBacktracking } from "./backtracking"
 import type { Cell } from "./types"
 import { createEmptyGrid } from "./utils";
 
@@ -17,7 +17,7 @@ export function generatePuzzle(): Cell[][] {
     }
 
     // Solve the rest
-    solveWithForwardChecking(newBoard)
+    solveWithBacktracking(newBoard)
 
     // Remove numbers to create puzzle (keep 30-35 numbers)
     const cellsToRemove = 81 - (30 + Math.floor(Math.random() * 6))

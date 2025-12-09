@@ -1,10 +1,40 @@
+import { useState } from 'react'
+import type { Cell, Algo, SudokuMove } from './algorithms/sudoku/types'
+import { createEmptyGrid, solve } from './algorithms/sudoku/utils'
 import './App.css'
-import Grid from './components/Grid'
+import Board from './components/Board'
+import { generatePuzzle } from './algorithms/sudoku/generatePuzzle'
+
+const emptyGrid: Cell[][] = createEmptyGrid()
 
 function App() {
+    const [grid, setGrid] = useState(emptyGrid)
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algo>()
+    // const [moves, setMoves] = useState<SudokuMove[] | null>()
+
+    const handleGridChange = (row: number, col: number, value: string) => {
+        const num = value === "" ? null : Number(value)
+        if (num === null || (num >= 1 && num <= 9)) {
+            setGrid(prev => {
+                const newGrid = prev.map(r => r.map(c => ({ ...c })))
+                newGrid[row][col].value = num
+                return newGrid
+            });
+        }
+    };
+
+    const handleSolve = () => {
+        if (!selectedAlgorithm) { alert("Select an Algorithm First"); return }
+
+        // setMoves(solve(grid, setGrid, selectedAlgorithm as Algo))
+        const moves = solve(grid, setGrid, selectedAlgorithm as Algo)
+        console.log(moves)
+
+
+    }
 
     return (
-        <div className='m-5 flex flex-col space-y-3 align-center justify-center'>
+        <div className='p-5 flex flex-col space-y-1 align-center justify-center h-screen'>
 
 
             <h1 className='text-center text-7xl'>
@@ -18,24 +48,39 @@ function App() {
             <div className='flex flex-col mx-auto w-143'>
 
                 <div className='flex justify-between text-black py-3'>
-                    <select className='bg-neutral-300'>
+                    <select className='bg-neutral-300 w-55'
+                        defaultValue={"default"}
+                        value={selectedAlgorithm}
+                        onChange={(option) => {
+                            setSelectedAlgorithm(option.target.value as Algo)
+                        }}>
+                        <option disabled value="default">Choose Algorithm</option>
                         <option value="backtracking">Backtracking</option>
                         <option value="human">Human</option>
                     </select>
-                    <button className='bg-sky-400'>
+                    <button className='bg-sky-400 w-30 h-7' onClick={() => { setGrid(emptyGrid) }}>
                         Reset
                     </button>
                 </div>
 
-                <Grid />
+                <Board
+                    board={grid}
+                    handleChange={handleGridChange}
+                />
 
                 <div className='flex justify-center space-x-10 text-black py-3'>
-                    <button className='bg-sky-400 w-50'>
+                    <button
+                        className='bg-sky-400 w-50 h-7'
+                        onClick={() => { setGrid(generatePuzzle()) }}
+                    >
                         Generate Puzzle
                     </button>
-                    <button className='bg-green-300 w-50'>
+                    <button className='bg-green-300 w-50' onClick={handleSolve}>
                         Solve
                     </button>
+                    {/* <button className='bg-red-300 w-20' onClick={() => { console.log(moves) }}>
+                        test
+                    </button> */}
                 </div>
 
             </div>

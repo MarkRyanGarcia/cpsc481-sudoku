@@ -56,7 +56,7 @@ function App() {
             <div className='flex flex-col mx-auto w-135'>
 
                 <div className='flex justify-between text-black py-3'>
-                    <select className='bg-neutral-300 w-70'
+                    <select className='bg-zinc-300 rounded-xl w-50 pr-4 font-bold'
                         defaultValue={"default"}
                         value={selectedAlgorithm}
                         onChange={(option) => {
@@ -67,7 +67,7 @@ function App() {
                         <option value="backtrackingWithForwardChecking">Backtracking + Forward Checking</option>
                         <option value="human">Human</option>
                     </select>
-                    <button className='bg-sky-400 w-30 h-7' onClick={() => { setGrid(emptyGrid) }}>
+                    <button className='bg-sky-400 w-30 h-7 rounded-2xl font-bold' onClick={() => { setGrid(emptyGrid) }}>
                         Reset
                     </button>
                 </div>
@@ -80,12 +80,12 @@ function App() {
 
                 <div className='flex justify-center space-x-10 text-black py-3'>
                     <button
-                        className='bg-sky-400 w-50 h-7'
+                        className='bg-sky-400 w-50 h-7 rounded-2xl font-bold'
                         onClick={() => { setGrid(generatePuzzle()) }}
                     >
                         Generate Puzzle
                     </button>
-                    <button className='bg-green-300 w-50' onClick={handleSolve}>
+                    <button className='bg-green-300 w-50 rounded-2xl font-bold' onClick={handleSolve}>
                         Solve
                     </button>
                 </div>

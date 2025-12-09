@@ -9,29 +9,46 @@ type Props = {
 export default function Board({ board, handleChange, activeCell }: Props) {
     return (
         <div className="flex flex-col items-center space-y-3">
-            <div className="grid grid-cols-9 gap-0">
+            <div className="
+                grid grid-cols-9 border-[5px] border-r-[8px]
+                ">
                 {board.map((row, r) =>
                     row.map((cell, c) => {
                         const isActive = activeCell && activeCell.r === r && activeCell.c === c
-                        
-                        const thickTop = r === 0 || r === 3 || r === 6
-                        const thickLeft = c === 0 || c === 3 || c === 6
-                        const thickRight = c === 2 || c === 5 || c === 8
-                        const thickBottom = r === 2 || r === 5 || r === 8
-
-                        const borders = [
-                            thickTop && "border-t-4 border-white",
-                            thickLeft && "border-l-4 border-white",
-                            thickRight && "border-r-4 border-white",
-                            thickBottom && "border-b-4 border-white",
-                        ]
-                            .filter(Boolean)
-                            .join(" ")
 
                         const visualizerClasses = [
                             isActive ? "bg-yellow-600 z-10" : "",
                             isActive ? "animate-pulse" : "",
                         ].join(" ")
+
+                        // All cells get base 1px borders
+                        const thinBorders = "border border-gray-400";
+                        
+                        // Thick borders at 3x3 box boundaries (3px instead of 1px, so 2px extra)
+                        // Use negative margin to pull back by the extra 2px
+                        const hasThickTop = r % 3 === 0;
+                        const hasThickLeft = c % 3 === 0;
+                        const hasThickBottom = (r + 1) % 3 === 0;
+                        const hasThickRight = (c + 1) % 3 === 0;
+                        
+                        const thickBorders = [
+                            hasThickTop && "border-t-[3px] border-t-white",
+                            hasThickLeft && "border-l-[3px] border-l-white",
+                            hasThickBottom && "border-b-[3px] border-b-white",
+                            hasThickRight && "border-r-[3px] border-r-white",
+                        ]
+                        .filter(Boolean)
+                        .join(" ");
+                        
+                        // Apply negative margins only where thick borders exist
+                        const margins = [
+                            hasThickTop && "-mt-[2px]",
+                            hasThickLeft && "-ml-[2px]",
+                            hasThickBottom && "-mb-[2px]",
+                            hasThickRight && "-mr-[2px]",
+                        ]
+                        .filter(Boolean)
+                        .join(" ");
 
 
                         return (
@@ -43,11 +60,13 @@ export default function Board({ board, handleChange, activeCell }: Props) {
                                 maxLength={1}
                                 disabled={cell.isFixed}
                                 className={[
-                                    "w-15 h-15 text-center text-3xl border border-gray-800 outline-none transition-colors duration-100",
-                                    cell.isFixed ? "bg-gray-500" : "bg-gray-700 focus:bg-gray-600",
-                                    borders,
-                                    visualizerClasses
-                                ].join(" ")}
+                                    "w-16 h-16 border text-center text-3xl bg-gray-700 focus:bg-gray-600 outline-none transition-colors duration-100 box-border",
+                                    cell.isFixed && "bg-gray-500",
+                                    thinBorders,
+                                    thickBorders,
+                                    margins,
+                                    visualizerClasses,
+                                    ].join(" ")}
                             />
                         )
                     })

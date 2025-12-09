@@ -56,7 +56,7 @@ function App() {
             <div className='flex flex-col mx-auto w-135'>
 
                 <div className='flex justify-between text-black py-3'>
-                    <select className='bg-zinc-300 rounded-xl w-70 pr-4 pl-2 font-bold'
+                    <select className='bg-zinc-300 rounded-xl w-75 pr-4 pl-2 font-bold'
                         defaultValue={"default"}
                         value={selectedAlgorithm}
                         onChange={(option) => {

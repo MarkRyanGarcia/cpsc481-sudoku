@@ -72,3 +72,30 @@ export function solve(
 }
 
 export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+export function isValidSudoku(grid: Cell[][]): boolean {
+    const rows: boolean[][] = Array.from({ length: 9 }, () => Array(9).fill(false));
+    const cols: boolean[][] = Array.from({ length: 9 }, () => Array(9).fill(false));
+    const boxes: boolean[][] = Array.from({ length: 9 }, () => Array(9).fill(false));
+
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            const cellValue = grid[r][c].value;
+
+            if (cellValue != null) {
+                const numIndex = cellValue - 1; 
+                const boxIndex = Math.floor(r / 3) * 3 + Math.floor(c / 3);
+                if (rows[r][numIndex] || cols[c][numIndex] || boxes[boxIndex][numIndex]) {
+                    return false;
+                }
+
+                rows[r][numIndex] = true;
+                cols[c][numIndex] = true;
+                boxes[boxIndex][numIndex] = true;
+            }
+        }
+    }
+    
+
+    return true;
+}

@@ -21,7 +21,7 @@ export function getCandidates(grid: Cell[][], r: number, c: number): number[] {
 
     const br = Math.floor(r / 3) * 3
     const bc = Math.floor(c / 3) * 3
-    
+
     for (let rr = br; rr < br + 3; rr++) {
         for (let cc = bc; cc < bc + 3; cc++) {
             const v = grid[rr][cc].value
@@ -38,4 +38,10 @@ export function getCandidates(grid: Cell[][], r: number, c: number): number[] {
         }
     }
     return cand
+}
+
+export function createEmptyGrid(): Cell[][] {
+    return Array.from({ length: 9 }, () =>
+        Array.from({ length: 9 }, () => ({ value: null, isFixed: false }))
+    );
 }

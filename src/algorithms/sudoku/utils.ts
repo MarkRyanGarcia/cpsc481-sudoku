@@ -51,20 +51,24 @@ export function createEmptyGrid(): Cell[][] {
 
 export function solve(
     grid: Cell[][],
-    setGrid: (grid: Cell[][]) => void,
     algorithm: Algo
 ) {
     const clone = grid.map(r => r.map(c => ({ ...c })))
     let moves: SudokuMove[] | null = []
     if (algorithm == 'backtracking') {
+        moves = solveWithBacktracking(clone, false)
+    } else if (algorithm == 'backtrackingWithForwardChecking') {
         moves = solveWithBacktracking(clone)
-    } else if (algorithm == 'human') {
+    }
+    else if (algorithm == 'human') {
         moves = humanSolver(clone)
     } else {
         console.error('Attempted to Solve without an algorithm selected.')
     }
-    setGrid(clone)
+    // setGrid(clone)
     // console.log("moves", moves)
     // console.log("final grid", clone.map(r => r.map(c => c.value)))
     return moves
 }
+
+export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))

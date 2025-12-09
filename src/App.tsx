@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import type { Cell, Algo, SudokuMove } from './algorithms/sudoku/types'
-import { createEmptyGrid, solve } from './algorithms/sudoku/utils'
+import type { Cell, Algo } from './algorithms/sudoku/types'
+import { createEmptyGrid, sleep, solve } from './algorithms/sudoku/utils'
 import './App.css'
 import Board from './components/Board'
 import { generatePuzzle } from './algorithms/sudoku/generatePuzzle'
@@ -23,13 +23,21 @@ function App() {
         }
     };
 
-    const handleSolve = () => {
+    async function handleSolve() {
         if (!selectedAlgorithm) { alert("Select an Algorithm First"); return }
 
-        // setMoves(solve(grid, setGrid, selectedAlgorithm as Algo))
-        const moves = solve(grid, setGrid, selectedAlgorithm as Algo)
+        const moves = solve(grid, selectedAlgorithm as Algo)
         console.log(moves)
-
+        if (moves && moves.length > 0) {
+            for (const move of moves) {
+                handleGridChange(move.r, move.c, String(move.value))
+                console.log(move.reason)
+                await sleep(5000 / moves.length)
+            }
+        }
+        else {
+            alert("Impossible Board")
+        }
 
     }
 
@@ -45,10 +53,10 @@ function App() {
                 and watch the solution unfold step-by-step.
             </p>
 
-            <div className='flex flex-col mx-auto w-143'>
+            <div className='flex flex-col mx-auto w-135'>
 
                 <div className='flex justify-between text-black py-3'>
-                    <select className='bg-neutral-300 w-55'
+                    <select className='bg-neutral-300 w-70'
                         defaultValue={"default"}
                         value={selectedAlgorithm}
                         onChange={(option) => {
@@ -56,6 +64,7 @@ function App() {
                         }}>
                         <option disabled value="default">Choose Algorithm</option>
                         <option value="backtracking">Backtracking</option>
+                        <option value="backtrackingWithForwardChecking">Backtracking + Forward Checking</option>
                         <option value="human">Human</option>
                     </select>
                     <button className='bg-sky-400 w-30 h-7' onClick={() => { setGrid(emptyGrid) }}>
@@ -78,9 +87,6 @@ function App() {
                     <button className='bg-green-300 w-50' onClick={handleSolve}>
                         Solve
                     </button>
-                    {/* <button className='bg-red-300 w-20' onClick={() => { console.log(moves) }}>
-                        test
-                    </button> */}
                 </div>
 
             </div>

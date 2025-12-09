@@ -10,4 +10,4 @@ export type SudokuMove = {
     reason: string
 }
 
-export type Algo = "human" | "backtracking"
+export type Algo = "human" | "backtracking" | "backtrackingWithForwardChecking"

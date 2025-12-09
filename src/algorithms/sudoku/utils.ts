@@ -1,5 +1,5 @@
 import { solveWithBacktracking } from "./backtracking"
-import { humanSolver } from "./humanSolver"
+import { solveHumanLike } from "./human"
 import type { Algo, Cell, SudokuMove } from "./types"
 
 
@@ -61,7 +61,7 @@ export function solve(
         moves = solveWithBacktracking(clone)
     }
     else if (algorithm == 'human') {
-        moves = humanSolver(clone)
+        moves = solveHumanLike(clone)
     } else {
         console.error('Attempted to Solve without an algorithm selected.')
     }

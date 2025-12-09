@@ -10,7 +10,6 @@ const emptyGrid: Cell[][] = createEmptyGrid()
 function App() {
     const [grid, setGrid] = useState(emptyGrid)
     const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algo>()
-    // const [moves, setMoves] = useState<SudokuMove[] | null>()
 
     const handleGridChange = (row: number, col: number, value: string) => {
         const num = value === "" ? null : Number(value)
@@ -31,7 +30,7 @@ function App() {
         if (moves && moves.length > 0) {
             for (const move of moves) {
                 handleGridChange(move.r, move.c, String(move.value))
-                console.log(move.reason)
+                // console.log(move.reason)
                 await sleep(5000 / moves.length)
             }
         }

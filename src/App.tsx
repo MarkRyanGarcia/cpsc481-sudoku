@@ -27,7 +27,7 @@ function App() {
         if (!selectedAlgorithm) { alert("Select an Algorithm First"); return }
 
         const moves = solve(grid, selectedAlgorithm as Algo)
-        console.log(moves)
+        // console.log(moves)
         if (moves && moves.length > 0) {
             for (const move of moves) {
                 setActiveCell({ r: move.r, c: move.c })

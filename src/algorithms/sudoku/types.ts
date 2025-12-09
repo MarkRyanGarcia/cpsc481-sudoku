@@ -11,3 +11,5 @@ export type SudokuMove = {
 }
 
 export type Algo = "human" | "backtracking" | "backtrackingWithForwardChecking"
+
+export type ActiveCellCoords = { r: number, c: number }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Cell, Algo } from './algorithms/sudoku/types'
+import type { Cell, Algo, ActiveCellCoords } from './algorithms/sudoku/types'
 import { createEmptyGrid, sleep, solve } from './algorithms/sudoku/utils'
 import './App.css'
 import Board from './components/Board'
@@ -10,6 +10,7 @@ const emptyGrid: Cell[][] = createEmptyGrid()
 function App() {
     const [grid, setGrid] = useState(emptyGrid)
     const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algo>()
+    const [activeCell, setActiveCell] = useState<ActiveCellCoords | null>(null);
 
     const handleGridChange = (row: number, col: number, value: string) => {
         const num = value === "" ? null : Number(value)
@@ -29,15 +30,15 @@ function App() {
         console.log(moves)
         if (moves && moves.length > 0) {
             for (const move of moves) {
+                setActiveCell({ r: move.r, c: move.c })
                 handleGridChange(move.r, move.c, String(move.value))
-                // console.log(move.reason)
                 await sleep(5000 / moves.length)
             }
+            setActiveCell(null);
         }
         else {
             alert("Impossible Board")
         }
-
     }
 
     return (
@@ -74,6 +75,7 @@ function App() {
                 <Board
                     board={grid}
                     handleChange={handleGridChange}
+                    activeCell={activeCell}
                 />
 
                 <div className='flex justify-center space-x-10 text-black py-3'>

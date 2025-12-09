@@ -3,14 +3,17 @@ import type { Cell } from "../algorithms/sudoku/types"
 type Props = {
     board: Cell[][]
     handleChange: (row: number, col: number, value: string) => void
+    activeCell: { r: number, c: number } | null
 }
 
-export default function Board({ board, handleChange }: Props) {
+export default function Board({ board, handleChange, activeCell }: Props) {
     return (
         <div className="flex flex-col items-center space-y-3">
             <div className="grid grid-cols-9 gap-0">
                 {board.map((row, r) =>
                     row.map((cell, c) => {
+                        const isActive = activeCell && activeCell.r === r && activeCell.c === c
+                        
                         const thickTop = r === 0 || r === 3 || r === 6
                         const thickLeft = c === 0 || c === 3 || c === 6
                         const thickRight = c === 2 || c === 5 || c === 8
@@ -25,6 +28,12 @@ export default function Board({ board, handleChange }: Props) {
                             .filter(Boolean)
                             .join(" ")
 
+                        const visualizerClasses = [
+                            isActive ? "bg-yellow-600 z-10" : "",
+                            isActive ? "animate-pulse" : "",
+                        ].join(" ")
+
+
                         return (
                             <input
                                 key={`${r}-${c}`}
@@ -34,9 +43,10 @@ export default function Board({ board, handleChange }: Props) {
                                 maxLength={1}
                                 disabled={cell.isFixed}
                                 className={[
-                                    "w-15 h-15 text-center text-3xl border border-gray-800 outline-none",
+                                    "w-15 h-15 text-center text-3xl border border-gray-800 outline-none transition-colors duration-100",
                                     cell.isFixed ? "bg-gray-500" : "bg-gray-700 focus:bg-gray-600",
-                                    borders
+                                    borders,
+                                    visualizerClasses
                                 ].join(" ")}
                             />
                         )

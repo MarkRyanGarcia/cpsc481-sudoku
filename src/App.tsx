@@ -25,10 +25,7 @@ function App() {
 
     async function handleSolve() {
         if (!selectedAlgorithm) { alert("Select an Algorithm First"); return }
-        if (!isValidSudoku(grid)) {
-            alert("Impossible Board")
-            return
-        }
+        if (!isValidSudoku(grid)) { alert("Impossible Board"); return }
 
         const moves = solve(grid, selectedAlgorithm as Algo)
         // console.log(moves)

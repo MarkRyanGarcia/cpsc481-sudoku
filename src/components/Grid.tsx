@@ -2,12 +2,11 @@ import { useState } from "react";
 import type { Cell } from "../algorithms/sudoku/types";
 import { humanSolver } from "../algorithms/sudoku/humanSolver";
 import { solveWithForwardChecking } from "../algorithms/sudoku/forwardSolver";
+import { humanSolver2 } from "../algorithms/sudoku/humanSolver2";
+import { generatePuzzle } from "../algorithms/sudoku/generatePuzzle";
+import { createEmptyGrid } from "../algorithms/sudoku/utils";
 
-
-
-let emptyGrid: Cell[][] = Array.from({ length: 9 }, () =>
-    Array.from({ length: 9 }, () => ({ value: null, isFixed: false }))
-);
+const emptyGrid: Cell[][] = createEmptyGrid();
 
 // // test
 const testPuzzle: Cell[][] = [
@@ -40,63 +39,83 @@ export default function Grid() {
     };
 
     return (
-        <div className="flex flex-col space-y-3">
-            <div className="grid grid-cols-9 gap-1">
-                {grid.map((row, rIdx) =>
-                    row.map((cell, cIdx) => (
-                        <input
-                            key={`${rIdx}-${cIdx}`}
-                            type="text"
-                            value={cell.value ?? ""}
-                            onChange={e => handleChange(rIdx, cIdx, e.target.value)}
-                            className={`w-15 h-15 text-center text-3xl border ${cell.isFixed ? "bg-gray-500" : "bg-gray-800"
-                                }`}
-                            maxLength={1}
-                            disabled={cell.isFixed}
-                        />
-                    ))
-                )}
-            </div>
-            <div className="flex justify-between">
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20"
-                    onClick={() => {
-                        setGrid(emptyGrid)
-                    }}>
-                    Reset
-                </button>
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20"
-                    onClick={() => {
-                        setGrid(testPuzzle)
-                    }}>
-                    Test
-                </button>
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-25"
-                    onClick={() => {
-                        const clone = grid.map(r => r.map(c => ({ ...c })))
-                        const moves = humanSolver(clone)
-                        setGrid(clone)
-                        console.log("moves", moves)
-                        console.log("final grid", clone.map(r => r.map(c => c.value)))
-                    }}>
-                    Human
-                </button>
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-25"
-                    onClick={() => {
-                        const clone = grid.map(r => r.map(c => ({ ...c })))
-                        const moves = solveWithForwardChecking(clone)
-                        if (moves) {
+        <div className='flex justify-center'>
+            <div className="flex flex-col space-y-3">
+                <div className="grid grid-cols-9 gap-1">
+                    {grid.map((row, rIdx) =>
+                        row.map((cell, cIdx) => (
+                            <input
+                                key={`${rIdx}-${cIdx}`}
+                                type="text"
+                                value={cell.value ?? ""}
+                                onChange={e => handleChange(rIdx, cIdx, e.target.value)}
+                                className={`w-15 h-15 text-center text-3xl border ${cell.isFixed ? "bg-gray-500" : "bg-gray-800"
+                                    }`}
+                                maxLength={1}
+                                disabled={cell.isFixed}
+                            />
+                        ))
+                    )}
+                </div>
+                {/* <div className="flex flex-col">
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20"
+                        onClick={() => {
+                            setGrid(emptyGrid)
+                        }}>
+                        Reset
+                    </button>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20"
+                        onClick={() => {
+                            setGrid(testPuzzle)
+                        }}>
+                        Test
+                    </button>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20"
+                        onClick={() => {
+                            setGrid(generatePuzzle())
+                        }}>
+                        Random
+                    </button>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-2"
+                        onClick={() => {
+                            const clone = grid.map(r => r.map(c => ({ ...c })))
+                            const moves = humanSolver(clone)
                             setGrid(clone)
-                            console.log(moves)
-                        } else {
-                            console.log("Puzzle is unsolvable")
-                        }
-                    }}>
-                    Forward
-                </button>
+                            console.log("moves", moves)
+                            console.log("final grid", clone.map(r => r.map(c => c.value)))
+                        }}>
+                        Human
+                    </button>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-25"
+                        onClick={() => {
+                            const clone = grid.map(r => r.map(c => ({ ...c })))
+                            const moves = solveWithForwardChecking(clone)
+                            if (moves) {
+                                setGrid(clone)
+                                console.log(moves)
+                            } else {
+                                console.log("Puzzle is unsolvable")
+                            }
+                        }}>
+                        Forward
+                    </button>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-2"
+                        onClick={() => {
+                            const clone = grid.map(r => r.map(c => ({ ...c })))
+                            const moves = humanSolver2(clone)
+                            setGrid(clone)
+                            console.log("moves", moves)
+                            console.log("final grid", clone.map(r => r.map(c => c.value)))
+                        }}>
+                        Human2
+                    </button>
+                </div> */}
             </div>
         </div>
     );

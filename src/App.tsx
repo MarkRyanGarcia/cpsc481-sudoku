@@ -54,10 +54,10 @@ function App() {
                 and watch the solution unfold step-by-step.
             </p>
 
-            <div className='flex flex-col mx-auto w-135'>
+            <div className='flex flex-col mx-auto w-80 md:w-135'>
 
                 <div className='flex justify-between text-black py-3'>
-                    <select className='bg-zinc-300 hover:bg-zinc-200 rounded-xl w-75 pr-4 pl-2 font-bold'
+                    <select className='bg-zinc-300 hover:bg-zinc-200 rounded-xl w-45 md:w-75 pr-4 pl-2 font-bold'
                         defaultValue={"default"}
                         value={selectedAlgorithm}
                         onChange={(option) => {
@@ -68,7 +68,7 @@ function App() {
                         <option value="backtrackingWithForwardChecking">Backtracking + Forward Checking</option>
                         <option value="human">Human</option>
                     </select>
-                    <button className='bg-sky-400 hover:bg-sky-300 w-30 h-7 rounded-2xl font-bold' onClick={() => { setGrid(emptyGrid) }}>
+                    <button className='bg-sky-400 hover:bg-sky-300 w-20 md:w-30 h-7 rounded-2xl font-bold' onClick={() => { setGrid(emptyGrid) }}>
                         Reset
                     </button>
                 </div>

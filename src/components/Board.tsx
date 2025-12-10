@@ -8,9 +8,9 @@ type Props = {
 
 export default function Board({ board, handleChange, activeCell }: Props) {
     return (
-        <div className="flex flex-col items-center space-y-3">
+        <div className="flex flex-col items-center space-y-5">
             <div className="
-                grid grid-cols-9 border-[5px] border-r-[8px]
+                grid grid-cols-9 md:border-[5px] md:border-r-8
                 ">
                 {board.map((row, r) =>
                     row.map((cell, c) => {
@@ -60,7 +60,7 @@ export default function Board({ board, handleChange, activeCell }: Props) {
                                 maxLength={1}
                                 disabled={cell.isFixed}
                                 className={[
-                                    "w-16 h-16 border text-center text-3xl bg-gray-700 focus:bg-gray-600 outline-none transition-colors duration-100 box-border",
+                                    "w-10 h-10 md:w-16 md:h-16 border text-center text-2xl md:text-3xl bg-gray-700 focus:bg-gray-600 outline-none transition-colors duration-100 box-border",
                                     cell.isFixed && "bg-gray-500",
                                     thinBorders,
                                     thickBorders,

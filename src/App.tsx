@@ -43,7 +43,7 @@ function App() {
     }
 
     return (
-        <div className='p-5 flex flex-col space-y-1 align-center justify-center h-screen'>
+        <div className='px-5 md:p-5 flex flex-col space-y-1 align-center justify-center h-screen'>
 
 
             <h1 className='text-center text-7xl'>

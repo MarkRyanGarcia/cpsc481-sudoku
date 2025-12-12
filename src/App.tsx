@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { Cell, Algo, ActiveCellCoords } from './algorithms/sudoku/types'
 import { createEmptyGrid, isSolved, isValidSudoku, sleep, solve } from './algorithms/sudoku/utils'
 import './App.css'
@@ -11,6 +11,7 @@ function App() {
     const [grid, setGrid] = useState(emptyGrid)
     const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algo>()
     const [activeCell, setActiveCell] = useState<ActiveCellCoords | null>(null);
+    const isSolving = useRef(false)
 
     const handleGridChange = (row: number, col: number, value: string) => {
         const num = value === "" ? null : Number(value)
@@ -23,20 +24,29 @@ function App() {
         }
     };
 
+    const handleStop = (reset: boolean = false) => {
+        if (reset) setGrid(emptyGrid);
+        isSolving.current = false;
+        setActiveCell(null);
+    }
+
     async function handleSolve() {
         if (!selectedAlgorithm) { alert("Select an Algorithm First"); return }
         if (!isValidSudoku(grid)) { alert("Impossible Board"); return }
         if (isSolved(grid)) { alert("Board is already filled"); return }
 
         const moves = solve(grid, selectedAlgorithm as Algo)
-        // console.log(moves)
         if (moves && moves.length > 0) {
+            isSolving.current = true
             for (const move of moves) {
+                if (!isSolving.current) {
+                    return
+                }
                 setActiveCell({ r: move.r, c: move.c })
                 handleGridChange(move.r, move.c, String(move.value))
                 await sleep(10000 / moves.length)
             }
-            setActiveCell(null);
+            handleStop()
         }
         else {
             alert("Impossible Board")
@@ -69,7 +79,7 @@ function App() {
                         <option value="backtrackingWithForwardChecking">Backtracking + Forward Checking</option>
                         <option value="human">Human</option>
                     </select>
-                    <button className='bg-sky-400 hover:bg-sky-300 w-20 md:w-30 h-7 rounded-2xl md:font-bold' onClick={() => { setGrid(emptyGrid) }}>
+                    <button className='bg-sky-400 hover:bg-sky-300 w-20 md:w-30 h-7 rounded-2xl md:font-bold' onClick={() => { handleStop(true) }}>
                         Reset
                     </button>
                 </div>

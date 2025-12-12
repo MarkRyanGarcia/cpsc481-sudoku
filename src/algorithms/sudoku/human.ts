@@ -1,3 +1,4 @@
+import { solveWithBacktracking } from "./backtracking"
 import type { Cell, SudokuMove } from "./types"
 
 type CandidateMap = number[][][]
@@ -29,17 +30,12 @@ export function solveHumanLike(grid: Cell[][]): SudokuMove[] | null {
             continue
         }
     }
-
     if (isSolved(grid)) {
         return moves
-    }
-    
-    // If no more singles, fall back to backtracking
-    if (backtrackSearch(grid, candidates, moves)) {
+    } else {
+        moves.push(...solveWithBacktracking(grid) as SudokuMove[])
         return moves
     }
-
-    return null
 }
 
 
@@ -160,60 +156,4 @@ function isSolved(grid: Cell[][]): boolean {
         }
     }
     return true
-}
-
-function findMRVEmpty(grid: Cell[][], candidates: CandidateMap): Position | null {
-    let minLen = 10
-    let pos: Position | null = null
-    for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-            if (grid[r][c].value == null) {
-                if (candidates[r][c].length < minLen) {
-                    minLen = candidates[r][c].length
-                    pos = [r, c]
-                }
-            }
-        }
-    }
-    return pos
-}
-
-const cloneCandidates = (map: CandidateMap): CandidateMap =>
-    map.map(row => row.map(cell => [...cell]))
-
-function backtrackSearch(grid: Cell[][], candidates: CandidateMap, moves: SudokuMove[]): boolean {
-    const pos = findMRVEmpty(grid, candidates)
-    if (!pos) return true
-
-    const [r, c] = pos
-    const cellCandidates = [...candidates[r][c]]
-
-    for (const val of cellCandidates) {
-        grid[r][c].value = val
-        moves.push({ r, c, value: val, reason: "Guess/Trial (BT)" })
-
-        const snapshot = cloneCandidates(candidates)
-        
-        applyMove(grid, candidates, [], r, c, val, "")
-
-        const conflict = candidates.flat().some((arr, idx) => {
-            const rr = Math.floor(idx / 9)
-            const cc = idx % 9
-            return grid[rr][cc].value == null && arr.length === 0
-        })
-
-        if (!conflict) {
-            if (backtrackSearch(grid, candidates, moves)) return true
-        }
-
-        moves.push({ r, c, value: val, reason: "Mistake/Backtrack (Guess Failed)" })
-
-        grid[r][c].value = null
-        
-        candidates.forEach((row, rr) =>
-            row.forEach((_, cc) => { candidates[rr][cc] = [...snapshot[rr][cc]] })
-        )
-    }
-
-    return false
 }

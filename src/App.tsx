@@ -30,6 +30,11 @@ function App() {
         setActiveCell(null);
     }
 
+    const handleGeneratePuzzle = () => {
+        handleStop(true);
+        setGrid(generatePuzzle());
+    }
+
     async function handleSolve() {
         if (!selectedAlgorithm) { alert("Select an Algorithm First"); return }
         if (!isValidSudoku(grid)) { alert("Impossible Board"); return }
@@ -93,7 +98,7 @@ function App() {
                 <div className='flex justify-center space-x-10 text-black py-3'>
                     <button
                         className='bg-sky-400 hover:bg-sky-300 w-50 h-7 rounded-2xl md:font-bold'
-                        onClick={() => { setGrid(generatePuzzle()) }}
+                        onClick={handleGeneratePuzzle}
                     >
                         Generate Puzzle
                     </button>

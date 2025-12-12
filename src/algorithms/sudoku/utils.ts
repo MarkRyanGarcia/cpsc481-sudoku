@@ -99,3 +99,12 @@ export function isValidSudoku(grid: Cell[][]): boolean {
 
     return true;
 }
+
+export function isSolved(grid: Cell[][]): boolean {
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            if (grid[r][c].value == null) return false
+        }
+    }
+    return true
+}

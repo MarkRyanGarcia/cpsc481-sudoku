@@ -1,5 +1,6 @@
 import { solveWithBacktracking } from "./backtracking"
 import type { Cell, SudokuMove } from "./types"
+import { isSolved } from "./utils"
 
 type CandidateMap = number[][][]
 type Position = [number, number]
@@ -143,16 +144,6 @@ function isSafe(r: number, c: number, val: number, currentGrid: Cell[][]): boole
             if (currentGrid[rr][cc].value === val) {
                 return false
             }
-        }
-    }
-    return true
-}
-
-
-function isSolved(grid: Cell[][]): boolean {
-    for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-            if (grid[r][c].value == null) return false
         }
     }
     return true

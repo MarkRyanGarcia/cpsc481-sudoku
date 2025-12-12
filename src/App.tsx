@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Cell, Algo, ActiveCellCoords } from './algorithms/sudoku/types'
-import { createEmptyGrid, isValidSudoku, sleep, solve } from './algorithms/sudoku/utils'
+import { createEmptyGrid, isSolved, isValidSudoku, sleep, solve } from './algorithms/sudoku/utils'
 import './App.css'
 import Board from './components/Board'
 import { generatePuzzle } from './algorithms/sudoku/generatePuzzle'
@@ -26,6 +26,7 @@ function App() {
     async function handleSolve() {
         if (!selectedAlgorithm) { alert("Select an Algorithm First"); return }
         if (!isValidSudoku(grid)) { alert("Impossible Board"); return }
+        if (isSolved(grid)) { alert("Board is already filled"); return }
 
         const moves = solve(grid, selectedAlgorithm as Algo)
         // console.log(moves)
